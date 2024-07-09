@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -23,12 +24,12 @@ class ProfileController extends Controller
         $user->username = $request->username;
         $user->email = $request->email;
 
-        if ($request->filled('password')) {
+        if ($request->filled('password') && $request->filled('password') == $request->filled('password_confi')) {
             $user->password = Hash::make($request->password);
         }
 
         $user->save();
 
-        return response()->json(['message' => 'Profile updated successfully.']);
+        return response()->json(['data'=> $user,'message' => 'Profile updated successfully.']);
     }
 }
